@@ -1,13 +1,13 @@
-package org.launchcode.taskmaster;
+package org.launchcode.taskcrusher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TaskmasterApplication {
+public class TaskcrusherApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaskmasterApplication.class, args);
+		SpringApplication.run(TaskcrusherApplication.class, args);
 	}
 
 }
