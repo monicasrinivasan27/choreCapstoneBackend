@@ -1,5 +1,5 @@
 body {
-    background-color: #ECF8F9;
+   background-color: #ECF8F9;
 }
 
 .welcome-logo {
@@ -7,4 +7,25 @@ body {
     margin-top: 10%;
     margin-left: auto;
     margin-right: auto;
+}
+
+/*.welcome-btn {
+   display: flex;
+   flex-direction: row;
+   margin: auto;
+} */
+
+.btn-index {
+    /*display: flex;
+    flex-direction: row;
+    margin: auto;*/
+    color: white;
+    background-color: #3D5656;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+    padding: 5px;
+    outline: none;
+    border: 5px;
+    border-radius: 4px;
 }
