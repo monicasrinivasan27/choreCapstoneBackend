@@ -1,0 +1,10 @@
+body {
+    background-color: #ECF8F9;
+}
+
+.welcome-logo {
+    display: block;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+}
