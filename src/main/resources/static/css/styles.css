@@ -9,16 +9,7 @@ body {
     margin-right: auto;
 }
 
-/*.welcome-btn {
-   display: flex;
-   flex-direction: row;
-   margin: auto;
-} */
-
 .btn-index {
-    /*display: flex;
-    flex-direction: row;
-    margin: auto;*/
     color: white;
     background-color: #3D5656;
     margin-top: 50px;
