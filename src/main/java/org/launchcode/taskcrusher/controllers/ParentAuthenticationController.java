@@ -75,6 +75,16 @@ public class ParentAuthenticationController {
             errors.rejectValue("username", "username.alreadyExists", "A user with that username already exists");
             return "parent-register";
         }
+
+        // ADDED 1/23 ---------------------------------------
+        //Look up parent user email in the DB and send user back if an account already exists with that email address
+        ParentUser existingParentEmail = parentUserRepository.findByEmail(parentRegistrationFormDTO.getEmail());
+        if (existingParentEmail != null) {
+            errors.rejectValue("email", "email.alreadyExists", "An account is already created with that email");
+            return "parent-register";
+        }
+        // ADDED 1/23 ---------------------------------------
+
         //Sends parent user back to form is passwords didn't match
         String password = parentRegistrationFormDTO.getPassword();
         String verifyPassword = parentRegistrationFormDTO.getVerifyPassword();

@@ -1,6 +1,7 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -14,6 +15,7 @@ public class ParentUser extends AbstractEntity {
     private String lastName;
 
     @NotNull
+    @Email
     private String email;
 
     @NotNull
