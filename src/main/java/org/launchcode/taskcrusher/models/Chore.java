@@ -1,6 +1,9 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "chores")
@@ -10,12 +13,20 @@ public class Chore {
     @GeneratedValue
     private int choreId;
 
+
     private String name;
 
     private String description;
 
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
     @Column(name = "image")
     private String image;
+
+    @ManyToOne
+    @JoinColumn(name = "kid_id")
+    private Kid kid;
 
     public int getChoreId() {
         return choreId;
@@ -47,5 +58,32 @@ public class Chore {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Kid getKid() {
+        return kid;
+    }
+
+    public void setKid(Kid kid) {
+        this.kid = kid;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Chore{" +
+                "choreId=" + choreId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", kid=" + kid +
+                '}';
     }
 }
