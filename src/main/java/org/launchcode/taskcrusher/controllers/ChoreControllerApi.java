@@ -15,15 +15,21 @@ public class ChoreControllerApi {
     @Autowired
     private ChoreRepository choreRepository;
 
+    // Retrieve list of chores
+
     @GetMapping("/list")
     public Iterable<Chore> getAllChores() {
         return choreRepository.findAll();
     }
 
+    // Add/create chore form
+
     @PostMapping("/add")
     public Chore createChore(@RequestBody Chore chore) {
         return choreRepository.save(chore);
     }
+
+    //Fetch existing chore details to edit
 
     @GetMapping("/edit/{choreId}")
     public Object getChoreDetails(@PathVariable int choreId) {
@@ -35,6 +41,8 @@ public class ChoreControllerApi {
             return "Chore not found";
         }
     }
+
+    // Update the chore, Added the right image path before setImage .
 
     @PutMapping("/edit/{choreId}")
     public Object updateChore(@PathVariable int choreId, @RequestBody Chore updatedChore) {
@@ -57,6 +65,8 @@ public class ChoreControllerApi {
             return "Chore not found";
         }
     }
+
+    //Delete the chore based on Id
 
     @DeleteMapping("/{choreId}")
     public void deleteChore(@PathVariable int choreId) {

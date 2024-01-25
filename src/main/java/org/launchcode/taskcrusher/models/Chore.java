@@ -13,7 +13,6 @@ public class Chore {
     @GeneratedValue
     private int choreId;
 
-
     private String name;
 
     private String description;
