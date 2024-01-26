@@ -1,0 +1,14 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+
+# IntelliJ IDEA
+.idea/
+
+# Gradle
+.gradle/
+
+# Ignore local build output
+build/
+
+
