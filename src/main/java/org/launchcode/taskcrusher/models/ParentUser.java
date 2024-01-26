@@ -1,12 +1,18 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class ParentUser extends AbstractEntity {
+public class ParentUser {
+
+    @Id
+    @GeneratedValue
+    private int id;
 
     @NotNull
     private String firstName;
@@ -35,6 +41,34 @@ public class ParentUser extends AbstractEntity {
     }
 
     public ParentUser(String username, String password) {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {return username;}
