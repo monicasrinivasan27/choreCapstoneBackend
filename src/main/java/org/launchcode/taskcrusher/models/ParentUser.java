@@ -12,7 +12,7 @@ public class ParentUser {
 
     @Id
     @GeneratedValue
-    private int id;
+    private int parentId;
 
     @NotNull
     private String firstName;
@@ -43,8 +43,8 @@ public class ParentUser {
     public ParentUser(String username, String password) {
     }
 
-    public int getId() {
-        return id;
+    public int getParentId() {
+        return parentId;
     }
 
     public String getFirstName() {
