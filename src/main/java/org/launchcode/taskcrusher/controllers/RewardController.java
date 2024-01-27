@@ -1,6 +1,7 @@
 package org.launchcode.taskcrusher.controllers;
 
-import org.launchcode.taskcrusher.models.dto.Reward;
+import org.launchcode.taskcrusher.models.Reward;
+import org.launchcode.taskcrusher.models.data.RewardRepository;
 import org.launchcode.taskcrusher.models.data.RewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
