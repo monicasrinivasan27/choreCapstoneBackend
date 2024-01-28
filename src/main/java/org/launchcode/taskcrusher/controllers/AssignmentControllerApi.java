@@ -65,5 +65,31 @@ public class AssignmentControllerApi {
         }
     }
 
+    // Retrieving assigned chores to kids
+    @GetMapping("/assigned-chores")
+    public List<AssignedChoresDTO> viewAssignedChores() {
+        // Retrieving all kids from the database
+        Iterable<Kid> kids = kidRepository.findAll();
+        List<AssignedChoresDTO> result = new ArrayList<>();
+
+        // Iterating through each kid to fetch their assigned chores
+        for (Kid kid : kids) {
+            // Finding chores assigned to the current kid
+            List<Chore> assignedChores = choreRepository.findByKid(kid);
+
+            // Creating a DTO to store kid and their assigned chores
+            AssignedChoresDTO assignedChoresDTO = new AssignedChoresDTO();
+            assignedChoresDTO.setKid(kid);
+            assignedChoresDTO.setChores(assignedChores);
+
+            // Adding the DTO to the result list
+            result.add(assignedChoresDTO);
+        }
+
+        // Returning the list of assigned chores for all kids
+        return result;
+    }
+
+
     
 }
