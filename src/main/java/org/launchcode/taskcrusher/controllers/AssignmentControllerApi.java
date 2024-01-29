@@ -1,5 +1,6 @@
 package org.launchcode.taskcrusher.controllers;
 
+import org.launchcode.taskcrusher.enums.ChoreStatus;
 import org.launchcode.taskcrusher.models.dto.AssignedChoresDTO;
 import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
@@ -55,6 +56,9 @@ public class AssignmentControllerApi {
             chore.setDueDate(dueDate);
             chore.setValueType(valueType);
             chore.setValue(value);
+
+           //set choreStatus to assigned
+            chore.setStatus(ChoreStatus.ASSIGNED);
 
             // Saving the updated Chore in the database
             choreRepository.save(chore);
