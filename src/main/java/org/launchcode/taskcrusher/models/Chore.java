@@ -23,6 +23,12 @@ public class Chore {
     @Column(name = "image")
     private String image;
 
+    @Column(name = "value_type")
+    private String valueType;
+
+    @Column(name = "value")
+    private int value;
+
     @ManyToOne
     @JoinColumn(name = "kid_id")
     private Kid kid;
@@ -73,6 +79,22 @@ public class Chore {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override
