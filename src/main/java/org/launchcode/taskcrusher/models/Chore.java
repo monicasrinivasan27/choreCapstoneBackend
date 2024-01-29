@@ -2,6 +2,7 @@ package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.launchcode.taskcrusher.enums.ChoreStatus;
 
 import java.time.LocalDate;
 
@@ -32,6 +33,10 @@ public class Chore {
     @ManyToOne
     @JoinColumn(name = "kid_id")
     private Kid kid;
+
+    @Enumerated(EnumType.STRING)
+    private ChoreStatus status;
+
 
     public int getChoreId() {
         return choreId;
@@ -95,6 +100,14 @@ public class Chore {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public ChoreStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ChoreStatus status) {
+        this.status = status;
     }
 
     @Override
