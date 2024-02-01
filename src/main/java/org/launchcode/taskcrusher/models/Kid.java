@@ -13,6 +13,10 @@ public class Kid {
 
     private String name;
 
+    private int points;
+
+    private double dollars;
+
 
     public int getKidId() {
         return kidId;
@@ -30,7 +34,21 @@ public class Kid {
         this.name = name;
     }
 
+    public int getPoints() {
+        return points;
+    }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public double getDollars() {
+        return dollars;
+    }
+
+    public void setDollars(double dollars) {
+        this.dollars = dollars;
+    }
 
     @Override
     public String toString() {
