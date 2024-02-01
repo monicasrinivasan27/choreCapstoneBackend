@@ -1,15 +1,12 @@
 package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.enums.ChoreStatus;
-import org.launchcode.taskcrusher.models.dto.AssignedChoresDTO;
 import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
+import org.launchcode.taskcrusher.models.dto.AssignedChoresDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-
-
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -57,7 +54,7 @@ public class AssignmentControllerApi {
             chore.setValueType(valueType);
             chore.setValue(value);
 
-           //set choreStatus to assigned
+            //set choreStatus to assigned
             chore.setStatus(ChoreStatus.ASSIGNED);
 
             // Saving the updated Chore in the database
@@ -69,31 +66,64 @@ public class AssignmentControllerApi {
         }
     }
 
-    // Retrieving assigned chores to kids
+    // Get the list of assigned chores for kids
     @GetMapping("/assigned-chores")
     public List<AssignedChoresDTO> viewAssignedChores() {
-        // Retrieving all kids from the database
+        // Retrieve all kids from the database
         Iterable<Kid> kids = kidRepository.findAll();
+        // Create a list to store the result (assigned chores for each kid)
         List<AssignedChoresDTO> result = new ArrayList<>();
 
-        // Iterating through each kid to fetch their assigned chores
+        // Iterate through each kid to find their assigned chores
         for (Kid kid : kids) {
-            // Finding chores assigned to the current kid
+            // Find the chores assigned to the current kid
             List<Chore> assignedChores = choreRepository.findByKid(kid);
 
-            // Creating a DTO to store kid and their assigned chores
+            // Group the chores based on their status
+            Map<String, List<Chore>> groupedChores = new HashMap<>();
+            for (Chore chore : assignedChores) {
+                String status = chore.getStatus().name();
+
+                // Create a list for the status if it doesn't exist
+                List<Chore> choresForStatus = groupedChores.computeIfAbsent(status, k -> new ArrayList<>());
+                // Add the chore to the list for the status
+                choresForStatus.add(chore);
+            }
+
+            // Create a DTO to store the kid and their assigned chores
             AssignedChoresDTO assignedChoresDTO = new AssignedChoresDTO();
             assignedChoresDTO.setKid(kid);
             assignedChoresDTO.setChores(assignedChores);
 
-            // Adding the DTO to the result list
+            // Add the DTO to the result list
             result.add(assignedChoresDTO);
         }
 
-        // Returning the list of assigned chores for all kids
+        // Return the list of assigned chores for all kids
         return result;
     }
 
 
-    
+    // Delete an assigned chore
+    @DeleteMapping("/assigned-chores/{choreId}")
+    public String deleteAssignedChore(@PathVariable int choreId) {
+        Optional<Chore> choreOptional = choreRepository.findById(choreId);
+
+        if (choreOptional.isPresent()) {
+            Chore choreToDelete = choreOptional.get();
+
+            // Check if the chore is in not completed before deleting
+            if (choreToDelete.getStatus() != ChoreStatus.COMPLETED) {
+                // Delete the assigned chore
+                choreRepository.delete(choreToDelete);
+                return "Assigned chore deleted successfully";
+            } else {
+                return "Cannot delete completed chores";
+            }
+        } else {
+            return "Chore not found";
+        }
+    }
+
+
 }
