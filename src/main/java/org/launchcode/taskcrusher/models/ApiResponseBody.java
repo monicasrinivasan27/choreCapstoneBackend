@@ -11,11 +11,11 @@ public class ApiResponseBody {
     private String[] types;
 
     public String getDate() {
-        return date;
-    }
+       return date;
+   }
 
-    public void setDate(String date) {
-        this.date = date;
+   public void setDate(String date)
+   {this.date = date;
     }
 
     public String getLocalName() {
