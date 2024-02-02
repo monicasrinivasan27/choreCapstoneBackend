@@ -42,15 +42,15 @@ public class ParentAuthenticationFilter implements HandlerInterceptor {
             return true;
         }
 
-        HttpSession session = request.getSession();
-        ParentUser parentUser = parentAuthenticationController.getParentUserFromSession(session);
-
-        // If the user is logged it
-        if (parentUser != null) {
-            return true;
-        }
-        // IF the user is not logged in
-        response.sendRedirect("/parent-login");
+//        HttpSession session = request.getSession();
+//        ParentUser parentUser = parentAuthenticationController.getParentUserFromSession(session);
+//
+//        // If the user is logged it
+//        if (parentUser != null) {
+//            return true;
+//        }
+//        // IF the user is not logged in
+//        response.sendRedirect("/parent-login");
         return false;
     }
 }
