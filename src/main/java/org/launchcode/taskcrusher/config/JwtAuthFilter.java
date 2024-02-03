@@ -1,21 +1,24 @@
 package org.launchcode.taskcrusher.config;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserAuthProvider userAuthProvider;
+
+    public JwtAuthFilter(UserAuthProvider userAuthProvider) {
+        this.userAuthProvider = userAuthProvider;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -26,7 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (header != null) {
             String[] elements = header.split(" ");
-            //JWT MUST have the correct lenght and bearer token
+            //JWT MUST have the correct length and bearer token
             if (elements.length == 2 && "Bearer".equals(elements[0])) {
                 try {
                     SecurityContextHolder.getContext().setAuthentication(

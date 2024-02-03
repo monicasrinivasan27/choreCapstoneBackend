@@ -19,7 +19,9 @@ public class SecurityConfig {
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
 
-    public SecurityConfig() {
+    public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, UserAuthProvider userAuthProvider) {
+        this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
+        this.userAuthProvider = userAuthProvider;
     }
 
     @Bean
@@ -32,7 +34,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll() //<-ONLY endpoints where
+                        .requestMatchers(HttpMethod.POST, "/parentLogin", "/register").permitAll() //<-ONLY endpoints
+                        // where
                         // auth is not required
                         .anyRequest().authenticated()
                 );
