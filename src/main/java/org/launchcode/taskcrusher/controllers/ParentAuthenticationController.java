@@ -4,16 +4,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.apache.catalina.startup.PasswdUserDatabase;
+import org.launchcode.taskcrusher.config.UserAuthProvider;
+import org.launchcode.taskcrusher.dto.CredentialsDto;
+import org.launchcode.taskcrusher.dto.SignUpDto;
+import org.launchcode.taskcrusher.dto.UserDto;
 import org.launchcode.taskcrusher.models.ParentUser;
 import org.launchcode.taskcrusher.models.data.ParentUserRepository;
 import org.launchcode.taskcrusher.models.dto.ParentLoginFormDTO;
 import org.launchcode.taskcrusher.models.dto.ParentRegistrationFormDTO;
+import org.launchcode.taskcrusher.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -61,46 +70,66 @@ public class ParentAuthenticationController {
         return "/register";
     }
 
+
+//----------------FROM JWT VIDEO-----------------------------------------------
+    private final UserService userService;
+    private final UserAuthProvider userAuthProvider;
+
     @PostMapping("/register")
-    public String processParentRegistrationForm(@ModelAttribute @Valid ParentRegistrationFormDTO parentRegistrationFormDTO,
-                                                Errors errors,
-                                                HttpServletRequest request) {
-        // Sends parent user back to form if errors are found
-        if (errors.hasErrors()) {
-            return "Please fill all fields in correctly";
-        }
-        //Look up parent user in the DB using the username they provided in the form
-        ParentUser existingParentUser = parentUserRepository.findByUsername(parentRegistrationFormDTO.getUsername());
-        // Sends parent user back to form if username already esists
-        if (existingParentUser != null) {
-            errors.rejectValue("username", "username.alreadyExists", "A user with that username already exists");
-            return "Username already exists";
-        }
-
-        // ADDED 1/23 ---------------------------------------
-        //Look up parent user email in the DB and send user back if an account already exists with that email address
-        ParentUser existingParentEmail = parentUserRepository.findByEmail(parentRegistrationFormDTO.getEmail());
-        if (existingParentEmail != null) {
-            errors.rejectValue("email", "email.alreadyExists", "An account is already created with that email");
-            return "There is already an account linked to that email address";
-        }
-        // ADDED 1/23 ---------------------------------------
-
-        //Sends parent user back to form is passwords didn't match
-        String password = parentRegistrationFormDTO.getPassword();
-        String verifyPassword = parentRegistrationFormDTO.getVerifyPassword();
-        if (!password.equals(verifyPassword)) {
-            errors.rejectValue("password", "passwords.mismatch", "Passwords do not match");
-            return "Passwords do not match";
-        }
-        //If there are no errors, save new username and hashed password in DB, start a new session, and redirect to
-        // parent homepage
-        ParentUser newParentUser = new ParentUser(parentRegistrationFormDTO.getUsername(),
-                parentRegistrationFormDTO.getPassword());
-        parentUserRepository.save(newParentUser);
-        setParentUserInSession(request.getSession(), newParentUser);
-        return "redirect:/parentDash";
+    public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
+        UserDto createUser = userService.register(user);
+        createUser.setToken(userAuthProvider.createToken(createUser));
+        return ResponseEntity.created(URI.create("/parentLogin/" + createUser.getId())).body(createUser);
     }
+
+    @PostMapping("/parentLogin")
+    public ResponseEntity<UserDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
+        UserDto userDto = userService.login(credentialsDto);
+        userDto.setToken(userAuthProvider.createToken(userDto));
+        return ResponseEntity.ok(userDto);
+    }
+//------------------------------------------------------------------------------
+
+//    @PostMapping("/register")
+//    public String processParentRegistrationForm(@ModelAttribute @Valid ParentRegistrationFormDTO parentRegistrationFormDTO,
+//                                                Errors errors,
+//                                                HttpServletRequest request) {
+//        // Sends parent user back to form if errors are found
+//        if (errors.hasErrors()) {
+//            return "Please fill all fields in correctly";
+//        }
+//        //Look up parent user in the DB using the username they provided in the form
+//        ParentUser existingParentUser = parentUserRepository.findByUsername(parentRegistrationFormDTO.getUsername());
+//        // Sends parent user back to form if username already esists
+//        if (existingParentUser != null) {
+//            errors.rejectValue("username", "username.alreadyExists", "A user with that username already exists");
+//            return "Username already exists";
+//        }
+//
+//        // ADDED 1/23 ---------------------------------------
+//        //Look up parent user email in the DB and send user back if an account already exists with that email address
+//        ParentUser existingParentEmail = parentUserRepository.findByEmail(parentRegistrationFormDTO.getEmail());
+//        if (existingParentEmail != null) {
+//            errors.rejectValue("email", "email.alreadyExists", "An account is already created with that email");
+//            return "There is already an account linked to that email address";
+//        }
+//        // ADDED 1/23 ---------------------------------------
+//
+//        //Sends parent user back to form is passwords didn't match
+//        String password = parentRegistrationFormDTO.getPassword();
+//        String verifyPassword = parentRegistrationFormDTO.getVerifyPassword();
+//        if (!password.equals(verifyPassword)) {
+//            errors.rejectValue("password", "passwords.mismatch", "Passwords do not match");
+//            return "Passwords do not match";
+//        }
+//        //If there are no errors, save new username and hashed password in DB, start a new session, and redirect to
+//        // parent homepage
+//        ParentUser newParentUser = new ParentUser(parentRegistrationFormDTO.getUsername(),
+//                parentRegistrationFormDTO.getPassword());
+//        parentUserRepository.save(newParentUser);
+//        setParentUserInSession(request.getSession(), newParentUser);
+//        return "redirect:/parentDash";
+//    }
 
     //Handlers for login form
     @GetMapping("/api/parent-login")
