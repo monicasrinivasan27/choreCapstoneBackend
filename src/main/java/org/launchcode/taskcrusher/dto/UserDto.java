@@ -1,10 +1,8 @@
 package org.launchcode.taskcrusher.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,4 +14,20 @@ public class UserDto {
     private String lastName;
     private String login;
     private String token;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

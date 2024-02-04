@@ -16,6 +16,9 @@ import java.util.Arrays;
 @EnableWebMvc
 public class WebConfig {
 
+    private static final long MAX_AGE = 3600L;
+    private static final int CORS_FILTER_ORDER = -102;
+
     @Bean
     public FilterRegistrationBean corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -33,10 +36,10 @@ public class WebConfig {
                 HttpMethod.PUT.name(),
                 HttpMethod.DELETE.name()
         ));
-        config.setMaxAge(3600L); //<-The time the Options request is accepted(30min)
+        config.setMaxAge(MAX_AGE); //<-The time the Options request is accepted(30min)
         source.registerCorsConfiguration("/**", config); //<-Applied for all the requests
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(-102); //<-Set at lowest position to be used before any Spring Security filter
+        bean.setOrder(CORS_FILTER_ORDER); //<-Set at lowest position to be used before any Spring Security filter
         return bean;
     }
 

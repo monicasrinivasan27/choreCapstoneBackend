@@ -1,13 +1,14 @@
 package org.launchcode.taskcrusher.config;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.launchcode.taskcrusher.dto.UserDto;
 import org.launchcode.taskcrusher.services.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,14 @@ import java.util.Date;
 @Component
 public class UserAuthProvider {
 
-    @Value("${security.jwt.token.secret-key:secret-value}")
+    @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
     private final UserService userService;
+
+    public UserAuthProvider(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostConstruct
     protected void init() {
@@ -31,25 +36,44 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String login) {
+    public String createToken(UserDto user) {
         Date now = new Date();
-        //JWT valid only 1 hour
-        Date validity = new Date(now.getTime() + 3_600_000);
+        Date validity = new Date(now.getTime() + 3600000); //1 hour
 
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
-                .withIssuer(login)
+                .withSubject(user.getLogin())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
-                .sign(Algorithm.HMAC256(secretKey));
+                .withClaim("firstName", user.getFirstName())
+                .withClaim("lastName", user.getLastName())
+                .sign(algorithm);
     }
 
     public Authentication validateToken(String token) {
-        JWT.require(Algorithm.HMAC256(secretKey))
-                .build();
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT decoded = verifier.verify(token);
 
-        UserDto user = userService.findByLogin(decoded.getIssuer());
+        UserDto user = UserDto.builder()
+                .login(decoded.getSubject())
+                .firstName(decoded.getClaim("firstName").asString())
+                .lastName(decoded.getClaim("lastName").asString())
+                .build();
+
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+    }
+
+    public  Authentication validateTokenStrongly(String token) {
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
+
+        DecodedJWT decoded = verifier.verify(token);
+
+        UserDto user = userService.findByLogin(decoded.getSubject());
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

@@ -28,13 +28,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header != null) {
-            String[] elements = header.split(" ");
+            String[] authElements = header.split(" ");
             //JWT MUST have the correct length and bearer token
-            if (elements.length == 2 && "Bearer".equals(elements[0])) {
+            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
                 try {
-                    SecurityContextHolder.getContext().setAuthentication(
-                            userAuthProvider.validateToken(elements[1])
-                    );
+                    if ("GET".equals(request.getMethod())) {
+                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateToken(authElements[1]));
+                    } else {SecurityContextHolder.getContext().setAuthentication(
+                            userAuthProvider.validateTokenStrongly(authElements[1]));
+                    }
                 } catch (RuntimeException e) {
                     //If something goes wrong, clear the security context and throw error
                     SecurityContextHolder.clearContext();

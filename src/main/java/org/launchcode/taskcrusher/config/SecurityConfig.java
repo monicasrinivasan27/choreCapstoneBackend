@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -26,19 +26,19 @@ public class SecurityConfig {
     }
 
     @Bean
-//    @ExceptionHandler
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.
-                exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
-                .and()
+        http
+                .exceptionHandling(customizer -> customizer.authenticationEntryPoint(userAuthenticationEntryPoint))
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/api", "/api/parentLogin", "/api/register").permitAll()
-                        //<-ONLY endpoints where auth is not required
+                        .requestMatchers(HttpMethod.POST, "/api", "/api/parentLogin", "/api/register").permitAll() //<-
+                        // ONLY
+                        // endpoints
+                        // where auth is not required
                         .anyRequest().authenticated()
+
                 );
         return http.build();
 

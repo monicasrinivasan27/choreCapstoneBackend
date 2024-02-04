@@ -13,7 +13,8 @@ public class SignUpDto {
 
     private String firstName;
     private String lastName;
-    private String login;
+    private String email;
+    private String username;
     private char[] password;
 
 }

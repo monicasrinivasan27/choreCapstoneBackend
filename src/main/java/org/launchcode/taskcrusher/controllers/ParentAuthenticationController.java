@@ -3,6 +3,7 @@ package org.launchcode.taskcrusher.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.launchcode.taskcrusher.models.ParentUser;
 import org.launchcode.taskcrusher.models.data.ParentUserRepository;
 import org.launchcode.taskcrusher.models.dto.ParentLoginFormDTO;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-//@Controller
+@RequiredArgsConstructor
 @RestController
-@CrossOrigin
+@RequestMapping("/api")
 public class ParentAuthenticationController {
 
     @Autowired
@@ -53,14 +54,14 @@ public class ParentAuthenticationController {
     }
 
     // Handlers for registration form
-    @GetMapping("/api/parent-register")
+    @GetMapping("/register")
     public String displayParentRegistrationForm(Model model, HttpSession session){
         model.addAttribute(new ParentRegistrationFormDTO());
         model.addAttribute("loggedIn", session.getAttribute("parentUser") != null);
-        return "/api/parent-register";
+        return "/register";
     }
 
-    @PostMapping("/api/parent-register")
+    @PostMapping("/register")
     public String processParentRegistrationForm(@ModelAttribute @Valid ParentRegistrationFormDTO parentRegistrationFormDTO,
                                                 Errors errors,
                                                 HttpServletRequest request) {
@@ -98,7 +99,7 @@ public class ParentAuthenticationController {
                 parentRegistrationFormDTO.getPassword());
         parentUserRepository.save(newParentUser);
         setParentUserInSession(request.getSession(), newParentUser);
-        return "redirect:/api/parent-dash";
+        return "redirect:/parentDash";
     }
 
     //Handlers for login form
