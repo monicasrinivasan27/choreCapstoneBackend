@@ -4,10 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.launchcode.taskcrusher.dto.UserDto;
 import org.launchcode.taskcrusher.services.UserService;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,10 +26,6 @@ public class UserAuthProvider {
 
     private final UserService userService;
 
-    public UserAuthProvider(UserService userService) {
-        this.userService = userService;
-    }
-
     @PostConstruct
     protected void init() {
         //Encode so it is not saved as plain text
@@ -42,7 +38,7 @@ public class UserAuthProvider {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
-                .withSubject(user.getLogin())
+                .withSubject(user.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .withClaim("firstName", user.getFirstName())
@@ -58,7 +54,7 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = UserDto.builder()
-                .login(decoded.getSubject())
+                .username(decoded.getSubject())
                 .firstName(decoded.getClaim("firstName").asString())
                 .lastName(decoded.getClaim("lastName").asString())
                 .build();

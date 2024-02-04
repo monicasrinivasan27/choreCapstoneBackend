@@ -20,11 +20,6 @@ public class SecurityConfig {
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
 
-    public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, UserAuthProvider userAuthProvider) {
-        this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
-        this.userAuthProvider = userAuthProvider;
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -33,10 +28,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/api", "/api/parentLogin", "/api/register").permitAll() //<-
-                        // ONLY
-                        // endpoints
-                        // where auth is not required
+                        .requestMatchers(HttpMethod.POST, "/api", "/api/parentLogin", "/api/register",
+                                "/api/kidLogin").permitAll() //<-ONLY endpoints where auth is not required
                         .anyRequest().authenticated()
 
                 );

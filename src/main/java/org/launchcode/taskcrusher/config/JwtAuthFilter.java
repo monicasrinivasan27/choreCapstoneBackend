@@ -16,10 +16,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserAuthProvider userAuthProvider;
 
-    public JwtAuthFilter(UserAuthProvider userAuthProvider) {
-        this.userAuthProvider = userAuthProvider;
-    }
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

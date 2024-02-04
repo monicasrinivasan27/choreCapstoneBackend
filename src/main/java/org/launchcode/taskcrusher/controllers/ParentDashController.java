@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-public class MessagesController {
+public class ParentDashController {
 
-    @GetMapping("/messages")
-    public ResponseEntity<List<String>> messages() {
-        return ResponseEntity.ok(Arrays.asList("first", "second"));
+    @GetMapping("/parentDash")
+    public ResponseEntity<String> parentDash() {
+        return ResponseEntity.ok("Yay! You did it!");
     }
 
 }

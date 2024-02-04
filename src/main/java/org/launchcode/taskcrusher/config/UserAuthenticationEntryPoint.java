@@ -1,10 +1,10 @@
 package org.launchcode.taskcrusher.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.launchcode.taskcrusher.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.launchcode.taskcrusher.dto.ErrorDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
