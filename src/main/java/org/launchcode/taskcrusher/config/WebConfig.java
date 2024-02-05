@@ -20,14 +20,14 @@ public class WebConfig {
     private static final int CORS_FILTER_ORDER = -102;
 
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); //<-Accepts frontend credentials
         config.addAllowedOrigin("http://localhost:3000"); //<-React URL
         config.setAllowedHeaders(Arrays.asList(
-                org.springframework.http.HttpHeaders.AUTHORIZATION,
-                org.springframework.http.HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.AUTHORIZATION,
+                HttpHeaders.CONTENT_TYPE,
                 HttpHeaders.ACCEPT
         ));
         config.setAllowedMethods(Arrays.asList(
@@ -38,8 +38,8 @@ public class WebConfig {
         ));
         config.setMaxAge(MAX_AGE); //<-The time the Options request is accepted(30min)
         source.registerCorsConfiguration("/**", config); //<-Applied for all the requests
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(CORS_FILTER_ORDER); //<-Set at lowest position to be used before any Spring Security filter
+        CorsFilter bean = new CorsFilter(source);
+//        bean.setOrder(CORS_FILTER_ORDER); //<-Set at lowest position to be used before any Spring Security filter
         return bean;
     }
 
