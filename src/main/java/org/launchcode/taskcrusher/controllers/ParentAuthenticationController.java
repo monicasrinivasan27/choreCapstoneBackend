@@ -35,7 +35,7 @@ public class ParentAuthenticationController {
     @PostMapping("/api/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createUser = userService.register(user);
-        createUser.setToken(userAuthProvider.createToken(createUser));
+//        createUser.setToken(userAuthProvider.createToken(createUser));
         return ResponseEntity.created(URI.create("/users/" + createUser.getId())).body(createUser);
     }
 //------------------------------------------------------------------------------

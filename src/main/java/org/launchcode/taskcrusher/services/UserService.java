@@ -36,13 +36,16 @@ public class UserService {
     }
 
     public UserDto register(SignUpDto userDto) {
+        System.out.println(11111);
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-
+        System.out.println(222222);
         if (optionalUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
-
+        ;
+        System.out.println("the user dto is" + userDto.toString());
         User user = userMapper.signUpToUser(userDto);
+        System.out.println("the user object is" + user.toString());
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
 
         User savedUser = userRepository.save(user);
