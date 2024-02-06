@@ -19,7 +19,6 @@ public class ApiController {
     @GetMapping("/holiday-data")
     public Boolean endpointCallApi(@RequestParam String dueDate) {
         String  yearParam  = dueDate.substring(0, 4);
-
         ResponseEntity<ApiResponseBody[]> response = ResponseEntity.ok(apiService.getAllHoliday(yearParam));
         ApiResponseBody[] responseBodyArray = response.getBody();
 
