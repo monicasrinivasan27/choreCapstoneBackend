@@ -8,6 +8,8 @@ import org.launchcode.taskcrusher.dto.UserDto;
 import org.launchcode.taskcrusher.services.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Component
 public class UserAuthProvider {
+
+    private final Logger logger = LoggerFactory.getLogger(UserAuthProvider.class);
 
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
@@ -37,13 +41,16 @@ public class UserAuthProvider {
         Date validity = new Date(now.getTime() + 3600000); //1 hour
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        return JWT.create()
+        String token = JWT.create()
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
                 .sign(algorithm);
+
+        logger.info("Generated Token: {}", token);// Print the token to console
+        return token;
     }
 
     public Authentication validateToken(String token) {

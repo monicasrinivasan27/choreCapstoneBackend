@@ -16,10 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.logging.Logger;
 
 @RequiredArgsConstructor
 @RestController
 public class ParentAuthenticationController {
+
+    private static final Logger logger = Logger.getLogger(ParentAuthenticationController.class.getName());
 
 //----------------FROM JWT VIDEO-----------------------------------------------
     private final UserService userService;
@@ -34,9 +37,11 @@ public class ParentAuthenticationController {
 
     @PostMapping("/api/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
+        logger.info("Received a request: {}");
+        System.out.println("Received registration request for user: " + user);
         UserDto createUser = userService.register(user);
-//        createUser.setToken(userAuthProvider.createToken(createUser));
-        return ResponseEntity.created(URI.create("/parentLogin" + createUser.getId())).body(createUser);
+        createUser.setToken(userAuthProvider.createToken(createUser));
+        return ResponseEntity.created(URI.create("/users/" + createUser.getId())).body(createUser);
     }
 //------------------------------------------------------------------------------
 
