@@ -36,7 +36,7 @@ public class ParentAuthenticationController {
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createUser = userService.register(user);
 //        createUser.setToken(userAuthProvider.createToken(createUser));
-        return ResponseEntity.created(URI.create("/parentLogin/" + createUser.getId())).body(createUser);
+        return ResponseEntity.created(URI.create("/parentLogin" + createUser.getId())).body(createUser);
     }
 //------------------------------------------------------------------------------
 
