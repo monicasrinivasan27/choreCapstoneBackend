@@ -1,6 +1,6 @@
-package org.launchcode.taskcrusher.config;
+package org.launchcode.taskcrusher.configure;
 
-import org.launchcode.taskcrusher.dto.ErrorDto;
+import org.launchcode.taskcrusher.models.dto.ErrorDto;
 import org.launchcode.taskcrusher.exceptions.AppException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,11 +1,11 @@
-package org.launchcode.taskcrusher.config;
+package org.launchcode.taskcrusher.configure;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.launchcode.taskcrusher.dto.UserDto;
-import org.launchcode.taskcrusher.services.UserService;
+import org.launchcode.taskcrusher.models.dto.UserDto;
+import org.launchcode.taskcrusher.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

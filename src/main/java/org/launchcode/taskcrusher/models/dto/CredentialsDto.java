@@ -1,3 +1,3 @@
-package org.launchcode.taskcrusher.dto;
+package org.launchcode.taskcrusher.models.dto;
 
 public record CredentialsDto (String username, char[] password) { }

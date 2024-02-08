@@ -1,6 +1,5 @@
-package org.launchcode.taskcrusher.config;
+package org.launchcode.taskcrusher.configure;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 public class WebConfig {
 
     private static final long MAX_AGE = 3600L;
-    private static final int CORS_FILTER_ORDER = -102;
+//    private static final int CORS_FILTER_ORDER = -102;
 
     @Bean
     public CorsFilter corsFilter() {

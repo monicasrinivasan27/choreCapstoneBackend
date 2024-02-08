@@ -1,4 +1,4 @@
-package org.launchcode.taskcrusher.config;
+package org.launchcode.taskcrusher.configure;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

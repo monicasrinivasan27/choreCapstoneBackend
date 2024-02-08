@@ -1,4 +1,4 @@
-package org.launchcode.taskcrusher.dto;
+package org.launchcode.taskcrusher.models.dto;
 
 import lombok.*;
 

@@ -1,7 +1,7 @@
-package org.launchcode.taskcrusher.config;
+package org.launchcode.taskcrusher.configure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.launchcode.taskcrusher.dto.ErrorDto;
+import org.launchcode.taskcrusher.models.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

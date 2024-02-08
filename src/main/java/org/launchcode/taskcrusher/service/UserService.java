@@ -1,12 +1,12 @@
-package org.launchcode.taskcrusher.services;
+package org.launchcode.taskcrusher.service;
 
-import org.launchcode.taskcrusher.dto.CredentialsDto;
-import org.launchcode.taskcrusher.dto.SignUpDto;
-import org.launchcode.taskcrusher.dto.UserDto;
-import org.launchcode.taskcrusher.entities.User;
+import org.launchcode.taskcrusher.models.dto.CredentialsDto;
+import org.launchcode.taskcrusher.models.dto.SignUpDto;
+import org.launchcode.taskcrusher.models.dto.UserDto;
+import org.launchcode.taskcrusher.models.User;
 import org.launchcode.taskcrusher.exceptions.AppException;
 import org.launchcode.taskcrusher.mappers.UserMapper;
-import org.launchcode.taskcrusher.repositories.UserRepository;
+import org.launchcode.taskcrusher.models.data.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;

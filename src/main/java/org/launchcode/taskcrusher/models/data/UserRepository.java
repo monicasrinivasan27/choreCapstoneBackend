@@ -1,6 +1,6 @@
-package org.launchcode.taskcrusher.repositories;
+package org.launchcode.taskcrusher.models.data;
 
-import org.launchcode.taskcrusher.entities.User;
+import org.launchcode.taskcrusher.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
