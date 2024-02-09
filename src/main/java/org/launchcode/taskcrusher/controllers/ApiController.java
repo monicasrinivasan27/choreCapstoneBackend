@@ -2,24 +2,23 @@ package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.models.ApiResponseBody;
 import org.launchcode.taskcrusher.service.ApiService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-
+//API controller
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-//@RequestMapping("/api")
 public class ApiController {
     private final ApiService apiService;
 
     @GetMapping("/holiday-data")
+    //Gets the Input date from the React front end when the Parent clicks on the Date.
     public Boolean endpointCallApi(@RequestParam String dueDate) {
+        //Getting the Year alone
         String  yearParam  = dueDate.substring(0, 4);
-
+        //The API needs the Year and hence passing this value to it.
         ResponseEntity<ApiResponseBody[]> response = ResponseEntity.ok(apiService.getAllHoliday(yearParam));
         ApiResponseBody[] responseBodyArray = response.getBody();
 
