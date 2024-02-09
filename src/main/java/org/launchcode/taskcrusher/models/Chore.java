@@ -37,7 +37,7 @@ public class Chore {
 
     @ManyToOne
     @JoinColumn(name = "parentId")
-    private ParentUser parent;
+    private User parent;
 
 
     @Enumerated(EnumType.STRING)
@@ -116,11 +116,11 @@ public class Chore {
         this.status = status;
     }
 
-    public ParentUser getParent() {
+    public User getParent() {
         return parent;
     }
 
-    public void setParent(ParentUser parent) {
+    public void setParent(User parent) {
         this.parent = parent;
     }
 
