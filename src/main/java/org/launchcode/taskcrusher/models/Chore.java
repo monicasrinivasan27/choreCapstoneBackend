@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.launchcode.taskcrusher.enums.ChoreStatus;
+import org.launchcode.taskcrusher.enums.ChoreValueType;
 
 import java.time.LocalDate;
 
@@ -25,8 +26,10 @@ public class Chore {
     @Column(name = "image")
     private String image;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "value_type")
-    private String valueType;
+    private ChoreValueType valueType;
+
 
     @Column(name = "value")
     private int value;
@@ -36,13 +39,11 @@ public class Chore {
     private Kid kid;
 
     @ManyToOne
-    @JoinColumn(name = "parentId")
-    private ParentUser parent;
-
+    @JoinColumn(name = "id")
+    private User parent;
 
     @Enumerated(EnumType.STRING)
     private ChoreStatus status;
-
 
     public int getChoreId() {
         return choreId;
@@ -92,12 +93,16 @@ public class Chore {
         this.dueDate = dueDate;
     }
 
-    public String getValueType() {
+    public ChoreValueType getValueType() {
         return valueType;
     }
 
-    public void setValueType(String valueType) {
+    public void setValueType(ChoreValueType valueType) {
         this.valueType = valueType;
+    }
+
+    public void setParent(User parent) {
+        this.parent = parent;
     }
 
     public int getValue() {
@@ -116,12 +121,8 @@ public class Chore {
         this.status = status;
     }
 
-    public ParentUser getParent() {
+    public User getParent() {
         return parent;
-    }
-
-    public void setParent(ParentUser parent) {
-        this.parent = parent;
     }
 
     @Override

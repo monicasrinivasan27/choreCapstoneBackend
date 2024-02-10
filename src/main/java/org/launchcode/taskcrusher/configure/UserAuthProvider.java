@@ -45,6 +45,7 @@ public class UserAuthProvider {
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
+                .withClaim("id",user.getId())
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
                 .sign(algorithm);

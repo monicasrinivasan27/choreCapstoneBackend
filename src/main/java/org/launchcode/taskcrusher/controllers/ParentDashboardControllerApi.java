@@ -6,16 +6,15 @@ import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
+import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -28,23 +27,32 @@ public class ParentDashboardControllerApi {
     @Autowired
     private KidRepository kidRepository;
 
-    @GetMapping
-    public List<Map<String, Object>> getParentDashboardStatistics() {
-        // Get all kids from the database
-        Iterable<Kid> kids = kidRepository.findAll();
-        // Create a list to store information about each child
-        List<Map<String, Object>> kidsCards = new ArrayList<>();
+    @GetMapping("/parent-dashboard-statistics")
+    public List<Map<String, Object>> getParentDashboardStatistics(Authentication authentication) {
+        UserDto authenticatedUser = (UserDto) authentication.getPrincipal();
+        Long parentId = authenticatedUser != null ? authenticatedUser.getId() : null;
 
-        // Loop through each child
-        for (Kid kid : kids) {
-            // Create a card with basic information about the child
-            Map<String, Object> kidCard = createKidCard(kid);
-            // Add the child's card to the list
-            kidsCards.add(kidCard);
+        if (parentId != null) {
+            // Get all kids associated with the parent ID
+            Iterable<Kid> kids = kidRepository.findByParentId(parentId);
+
+            // Create a list to store information about each child
+            List<Map<String, Object>> kidsCards = new ArrayList<>();
+
+            // Loop through each child
+            for (Kid kid : kids) {
+                // Create a card with basic information about the child
+                Map<String, Object> kidCard = createKidCard(kid);
+                // Add the child's card to the list
+                kidsCards.add(kidCard);
+            }
+
+            // Return the list of child cards
+            return kidsCards;
+        } else {
+
+            return Collections.emptyList();
         }
-
-        // Return the list of child cards
-        return kidsCards;
     }
 
     private Map<String, Object> createKidCard(Kid kid) {

@@ -1,8 +1,6 @@
 package org.launchcode.taskcrusher.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Kid {
@@ -16,6 +14,11 @@ public class Kid {
     private int points;
 
     private double dollars;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private User parent;
+
 
 
     public int getKidId() {
@@ -48,6 +51,14 @@ public class Kid {
 
     public void setDollars(double dollars) {
         this.dollars = dollars;
+    }
+
+    public User getParent() {
+        return parent;
+    }
+
+    public void setParent(User parent) {
+        this.parent = parent;
     }
 
     @Override
