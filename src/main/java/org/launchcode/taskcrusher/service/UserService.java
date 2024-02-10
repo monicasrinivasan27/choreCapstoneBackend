@@ -1,6 +1,9 @@
 package org.launchcode.taskcrusher.service;
 
+import org.launchcode.taskcrusher.models.Kid;
+import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.launchcode.taskcrusher.models.dto.CredentialsDto;
+import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.launchcode.taskcrusher.models.dto.SignUpDto;
 import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.launchcode.taskcrusher.models.User;
@@ -8,6 +11,7 @@ import org.launchcode.taskcrusher.exceptions.AppException;
 import org.launchcode.taskcrusher.mappers.UserMapper;
 import org.launchcode.taskcrusher.models.data.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.ap.internal.model.common.FinalField;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final KidRepository kidRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -36,16 +42,11 @@ public class UserService {
     }
 
     public UserDto register(SignUpDto userDto) {
-        System.out.println(11111);
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-        System.out.println(222222);
         if (optionalUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
-        ;
-        System.out.println("the user dto is" + userDto.toString());
         User user = userMapper.signUpToUser(userDto);
-        System.out.println("the user object is" + user.toString());
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
 
         User savedUser = userRepository.save(user);
@@ -60,7 +61,36 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
+//-----------------------------PARENT SERVICE (above) KIDS SERVICE (below)-----------------------------------------
 
+    public KidUserDto kidLogin(CredentialsDto credentialsDto) {
+        Kid kidUser = kidRepository.findByKidUsername(credentialsDto.username())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
+            return userMapper.toKidUserDto(kidUser);
+        }
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+    }
+
+    public KidUserDto kidRegister(SignUpDto kidUserDto) {
+        Optional<Kid> optionalKidUser = kidRepository.findByKidUsername(kidUserDto.username());
+        if (optionalKidUser.isPresent()) {
+            throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
+        }
+        Kid kidUser = userMapper.signUpToKidUser(kidUserDto);
+        kidUser.setPassword(passwordEncoder.encode(CharBuffer.wrap(kidUserDto.password())));
+
+        Kid savedKidUser = kidRepository.save(kidUser);
+
+        return userMapper.toKidUserDto(savedKidUser);
+
+    }
+
+    public KidUserDto findByKidUsername(String username) {
+        Kid kidUser = kidRepository.findByKidUsername(username)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        return userMapper.toKidUserDto(kidUser);
+    }
 
 }
