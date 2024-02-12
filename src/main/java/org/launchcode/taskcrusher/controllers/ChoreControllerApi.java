@@ -41,6 +41,7 @@ public class ChoreControllerApi {
     public String createChore(@RequestBody Chore chore, Authentication authentication) {
         // Check if the user is authenticated
         Long userId = getUserIdFromAuthentication(authentication);
+        System.out.println("1234567");
         if (userId != null) {
             chore.getParent().setId(userId);
             choreRepository.save(chore);

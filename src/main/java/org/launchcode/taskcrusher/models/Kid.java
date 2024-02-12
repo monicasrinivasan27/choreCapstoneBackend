@@ -16,7 +16,7 @@ public class Kid {
     private double dollars;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "id")
     private User parent;
 
 

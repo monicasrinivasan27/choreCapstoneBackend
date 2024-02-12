@@ -62,11 +62,12 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = UserDto.builder()
+                .id(decoded.getClaim("id").asLong())
                 .username(decoded.getSubject())
                 .firstName(decoded.getClaim("firstName").asString())
                 .lastName(decoded.getClaim("lastName").asString())
                 .build();
-
+        logger.info("Token validated successfully for user: {}", user.getUsername());
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
@@ -78,6 +79,8 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = userService.findByUsername(decoded.getSubject());
+
+        user.setId(decoded.getClaim("id").asLong());
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

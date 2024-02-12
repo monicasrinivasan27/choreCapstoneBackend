@@ -8,6 +8,7 @@ import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin
@@ -27,13 +29,16 @@ public class ParentDashboardControllerApi {
     @Autowired
     private KidRepository kidRepository;
 
-    @GetMapping("/parent-dashboard-statistics")
+    private static final Logger logger = Logger.getLogger(ParentAuthenticationController.class.getName());
+
+
+    @GetMapping("/statistics")
     public List<Map<String, Object>> getParentDashboardStatistics(Authentication authentication) {
         UserDto authenticatedUser = (UserDto) authentication.getPrincipal();
-        Long parentId = authenticatedUser != null ? authenticatedUser.getId() : null;
+        if (authenticatedUser != null) {
+            Long parentId = authenticatedUser.getId();
+            logger.info("parent Id");
 
-        if (parentId != null) {
-            // Get all kids associated with the parent ID
             Iterable<Kid> kids = kidRepository.findByParentId(parentId);
 
             // Create a list to store information about each child
