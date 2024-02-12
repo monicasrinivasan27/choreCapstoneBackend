@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface KidRepository extends JpaRepository<Kid,Integer> {
 
-    Optional<Kid> findByKidUsername(String username);
+    Optional<Kid> findByUsername(String username);
 }

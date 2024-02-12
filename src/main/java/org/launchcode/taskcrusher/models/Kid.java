@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class Kid {
+public class Kid extends User {
 
     @Id
     @GeneratedValue
@@ -13,7 +13,7 @@ public class Kid {
 
     private String name;
 
-    private String kidUsername;
+    private String username;
 
     private String password;
 
@@ -21,21 +21,21 @@ public class Kid {
 
     private double dollars;
 
-    public Kid(int kidId, String name, String kidUsername, String password, int points, double dollars) {
+    public Kid(int kidId, String name, String username, String password, int points, double dollars) {
         this.kidId = kidId;
         this.name = name;
-        this.kidUsername = kidUsername;
+        this.username = username;
         this.password = password;
         this.points = points;
         this.dollars = dollars;
     }
 
     public String getKidUsername() {
-        return kidUsername;
+        return username;
     }
 
-    public void setKidUsername(String kidUsername) {
-        this.kidUsername = kidUsername;
+    public void setKidUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
