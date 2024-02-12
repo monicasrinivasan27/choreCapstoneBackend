@@ -13,7 +13,7 @@ public class Kid {
 
     private String name;
 
-    private String username;
+    private String kidUsername;
 
     private String password;
 
@@ -21,21 +21,21 @@ public class Kid {
 
     private double dollars;
 
-    public Kid(int kidId, String name, String username, String password, int points, double dollars) {
+    public Kid(int kidId, String name, String kidUsername, String password, int points, double dollars) {
         this.kidId = kidId;
         this.name = name;
-        this.username = username;
+        this.kidUsername = kidUsername;
         this.password = password;
         this.points = points;
         this.dollars = dollars;
     }
 
-    public String getUsername() {
-        return username;
+    public String getKidUsername() {
+        return kidUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setKidUsername(String kidUsername) {
+        this.kidUsername = kidUsername;
     }
 
     public String getPassword() {

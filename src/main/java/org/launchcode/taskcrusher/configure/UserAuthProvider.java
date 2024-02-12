@@ -59,14 +59,14 @@ public class UserAuthProvider {
        Date validity = new Date(now.getTime() + 3600000); //1 hour
 
        Algorithm algorithm = Algorithm.HMAC256(secretKey);
-       String token = JWT.create()
-               .withSubject(kidUser.getUsername())
+       String kidToken = JWT.create()
+               .withSubject(kidUser.getKidUsername())
                .withIssuedAt(now)
                .withExpiresAt(validity)
                .withClaim("firstName", kidUser.getFirstName())
                .sign(algorithm);
 
-       return token;
+       return kidToken;
    }
 
     public Authentication validateToken(String token) {
@@ -93,7 +93,7 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(kidToken);
 
         KidUserDto kidUser = KidUserDto.builder()
-                .username(decoded.getSubject())
+                .kidUsername(decoded.getSubject())
                 .firstName(decoded.getClaim("firstName").asString())
                 .build();
 

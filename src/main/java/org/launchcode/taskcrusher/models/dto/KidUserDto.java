@@ -13,7 +13,7 @@ public class KidUserDto {
 
     private int id;
     private String firstName;
-    private String username;
+    private String kidUsername;
     private String token;
 
 }
