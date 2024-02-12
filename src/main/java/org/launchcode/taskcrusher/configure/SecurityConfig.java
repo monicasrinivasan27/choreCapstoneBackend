@@ -32,8 +32,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,  "/api/parentLogin", "/api/register",
                                 "/api/kidLogin").permitAll() //<-ONLY endpoints where auth is not required
 
-//                        .requestMatchers(HttpMethod.GET, "/api/chores/list", "/api/parentDash/statistics").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/api/chores/add", "/api/kidRegister").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/chores/list", "/api/parent-dashboard/statistics").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/chores/add", "/api/kidRegister").permitAll()
                         .anyRequest().authenticated()
 
                 );
