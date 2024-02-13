@@ -1,5 +1,6 @@
 package org.launchcode.taskcrusher.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +18,7 @@ public class Kid {
 
     @ManyToOne
     @JoinColumn(name = "id")
+    @JsonIgnore
     private User parent;
 
 
