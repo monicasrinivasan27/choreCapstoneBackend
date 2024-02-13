@@ -3,9 +3,13 @@ package org.launchcode.taskcrusher.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
-public class Kid extends User {
+@Builder
+@Data
+public class Kid{
 
     @Id
     @GeneratedValue
