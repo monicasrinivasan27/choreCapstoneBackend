@@ -96,12 +96,7 @@ import java.util.logging.Logger;
 
 
 
-import org.launchcode.taskcrusher.enums.ChoreStatus;
-import org.launchcode.taskcrusher.models.Chore;
-import org.launchcode.taskcrusher.models.Kid;
-import org.launchcode.taskcrusher.models.data.ChoreRepository;
-import org.launchcode.taskcrusher.models.data.KidRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -124,9 +119,9 @@ public class ParentDashboardControllerApi {
     private KidRepository kidRepository;
 
     @GetMapping("/statistics")
-    public List<Map<String, Object>> getParentDashboardStatistics(@RequestParam Long parentId) {
+    public List<Map<String, Object>> getParentDashboardStatistics(@RequestParam Long id) {
         // Get all kids from the database
-        List<Kid> kids = kidRepository.findByParentId(parentId);
+        List<Kid> kids = kidRepository.findByParentId(id);
         // Create a list to store information about each child
         List<Map<String, Object>> kidsCards = new ArrayList<>();
 

@@ -2,14 +2,11 @@ package org.launchcode.taskcrusher.controllers;
 
 
 import org.launchcode.taskcrusher.enums.ChoreStatus;
-import org.launchcode.taskcrusher.enums.ChoreValueType;
 import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
-import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -103,14 +100,14 @@ public class StatusControllerApi {
         int choreValue = chore.getValue();
 
         // Using ChoreValueType enum directly
-        ChoreValueType valueType = chore.getValueType();
+        String valueType = chore.getValueType();
 
-        if (ChoreValueType.POINTS.equals(valueType)) {
+        if ("Points".equalsIgnoreCase(valueType)) {
             kid.setPoints(currentValue + choreValue);
-        } else if (ChoreValueType.DOLLARS.equals(valueType)) {
+        } else if ("Dollars".equalsIgnoreCase(valueType)) {
             kid.setDollars(currentValue + choreValue);
         } else {
-            return "Invalid value type for chore. Should be 'POINTS' or 'DOLLARS'.";
+            return "Invalid value type for chore. Should be 'Points' or 'Dollars'.";
         }
 
         kidRepository.save(kid);

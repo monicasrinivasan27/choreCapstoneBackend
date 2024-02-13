@@ -167,10 +167,7 @@
 
 package org.launchcode.taskcrusher.controllers;
 
-import org.hibernate.annotations.Parent;
 import org.launchcode.taskcrusher.enums.ChoreStatus;
-import org.launchcode.taskcrusher.enums.ChoreValueType;
-import org.launchcode.taskcrusher.exceptions.AccessException;
 import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.User;
@@ -224,9 +221,9 @@ public class AssignmentControllerApi {
             @PathVariable int kidId,
             @RequestParam(name = "dueDate") LocalDate dueDate,
             @RequestParam(name = "value") int value,
-            @RequestParam(name = "valueType") ChoreValueType valueType){
+            @RequestParam(name = "valueType") String valueType){
 
-        // Checking if both the chore and kid exist in the database
+        // Checking if both the chore and kid and Parent exist in the database
         Optional<Chore> choreOptional = choreRepository.findById(choreId);
         Optional<Kid> kidOptional = kidRepository.findById(kidId);
         Optional<User> parentOptional = userRepository.findById(id);

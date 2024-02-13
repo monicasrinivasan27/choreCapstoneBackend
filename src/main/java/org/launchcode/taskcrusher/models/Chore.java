@@ -1,10 +1,7 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.launchcode.taskcrusher.enums.ChoreStatus;
-import org.launchcode.taskcrusher.enums.ChoreValueType;
 
 import java.time.LocalDate;
 
@@ -26,9 +23,9 @@ public class Chore {
     @Column(name = "image")
     private String image;
 
-    @Enumerated(EnumType.STRING)
+
     @Column(name = "value_type")
-    private ChoreValueType valueType;
+    private String valueType;
 
 
     @Column(name = "value")
@@ -93,11 +90,11 @@ public class Chore {
         this.dueDate = dueDate;
     }
 
-    public ChoreValueType getValueType() {
+    public String getValueType() {
         return valueType;
     }
 
-    public void setValueType(ChoreValueType valueType) {
+    public void setValueType(String valueType) {
         this.valueType = valueType;
     }
 

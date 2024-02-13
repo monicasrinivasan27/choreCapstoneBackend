@@ -22,7 +22,6 @@ public class Kid {
     private User parent;
 
 
-
     public int getKidId() {
         return kidId;
     }

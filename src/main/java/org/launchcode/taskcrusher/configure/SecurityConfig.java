@@ -53,13 +53,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                       // .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/chores/list", "/api/parent-dashboard/statistics", "/api/chores/edit/{choreId}", "/api/assignments/kids","api/assignments/assigned-chores").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/chores/add", "/api/assignments/{id}/{choreId}/{kidId}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/chores/edit/{choreId}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/chores/{choreId}").permitAll()
-                        .anyRequest().permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin","/api/kidRegister").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         return http.build();
