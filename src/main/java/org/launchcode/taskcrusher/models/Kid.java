@@ -34,11 +34,11 @@ public class Kid{
         this.dollars = dollars;
     }
 
-    public String getKidUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setKidUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

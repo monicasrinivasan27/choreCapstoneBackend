@@ -46,7 +46,7 @@ public class ParentAuthenticationController {
     public ResponseEntity<KidUserDto> addKidUser(@RequestBody @Valid SignUpDto kidUser) {
         KidUserDto createKidUser = userService.kidRegister(kidUser);
         createKidUser.setToken(userAuthProvider.createKidToken(createKidUser));
-        return ResponseEntity.created(URI.create("/kidUsers" + createKidUser.getId())).body(createKidUser);
+        return ResponseEntity.created(URI.create("/kidUsers/" + createKidUser.getId())).body(createKidUser);
     }
 
 //    //Handler for logging out
