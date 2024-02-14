@@ -6,7 +6,6 @@ import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 import java.util.Optional;
 

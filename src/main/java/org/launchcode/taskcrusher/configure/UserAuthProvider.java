@@ -1,5 +1,6 @@
 package org.launchcode.taskcrusher.configure;
 
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
-
 @RequiredArgsConstructor
 @Component
 public class UserAuthProvider {

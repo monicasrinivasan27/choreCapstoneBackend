@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Chore {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int choreId;
 
     private String name;
