@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class KidUserDto {
 
     private int id;
-    private String name;
+    private String firstName;
     private String username;
     private String token;
 

@@ -64,7 +64,7 @@ public class UserAuthProvider {
                .withSubject(kidUser.getUsername())
                .withIssuedAt(now)
                .withExpiresAt(validity)
-               .withClaim("firstName", kidUser.getName())
+               .withClaim("firstName", kidUser.getFirstName())
                .sign(algorithm);
 
        return kidToken;
@@ -95,7 +95,7 @@ public class UserAuthProvider {
 
         KidUserDto kidUser = KidUserDto.builder()
                 .username(decoded.getSubject())
-                .name(decoded.getClaim("name").asString())
+                .firstName(decoded.getClaim("name").asString())
                 .build();
 
         return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());

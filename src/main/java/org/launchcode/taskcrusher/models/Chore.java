@@ -36,7 +36,7 @@ public class Chore {
     private Kid kid;
 
     @ManyToOne
-    @JoinColumn(name = "parentId")
+    @JoinColumn(name = "id")
     private User parent;
 
 

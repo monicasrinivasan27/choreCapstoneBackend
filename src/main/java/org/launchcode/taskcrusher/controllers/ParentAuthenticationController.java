@@ -1,10 +1,7 @@
 package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.configure.UserAuthProvider;
-import org.launchcode.taskcrusher.models.dto.CredentialsDto;
-import org.launchcode.taskcrusher.models.dto.KidUserDto;
-import org.launchcode.taskcrusher.models.dto.SignUpDto;
-import org.launchcode.taskcrusher.models.dto.UserDto;
+import org.launchcode.taskcrusher.models.dto.*;
 import org.launchcode.taskcrusher.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +40,7 @@ public class ParentAuthenticationController {
     }
 
     @PostMapping("api/kidRegister")
-    public ResponseEntity<KidUserDto> addKidUser(@RequestBody @Valid SignUpDto kidUser) {
+    public ResponseEntity<KidUserDto> addKidUser(@RequestBody @Valid KidSignUpDto kidUser) {
         KidUserDto createKidUser = userService.kidRegister(kidUser);
         createKidUser.setToken(userAuthProvider.createKidToken(createKidUser));
         return ResponseEntity.created(URI.create("/kidUsers/" + createKidUser.getId())).body(createKidUser);

@@ -2,11 +2,8 @@ package org.launchcode.taskcrusher.service;
 
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.KidRepository;
-import org.launchcode.taskcrusher.models.dto.CredentialsDto;
+import org.launchcode.taskcrusher.models.dto.*;
 //import org.launchcode.taskcrusher.models.dto.KidUserDto;
-import org.launchcode.taskcrusher.models.dto.KidUserDto;
-import org.launchcode.taskcrusher.models.dto.SignUpDto;
-import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.launchcode.taskcrusher.models.User;
 import org.launchcode.taskcrusher.exceptions.AppException;
 import org.launchcode.taskcrusher.mappers.UserMapper;
@@ -89,7 +86,7 @@ public class UserService {
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    public KidUserDto kidRegister(SignUpDto kidUserDto) {
+    public KidUserDto kidRegister(KidSignUpDto kidUserDto) {
         Optional<Kid> optionalKidUser = kidRepository.findByUsername(kidUserDto.username());
         if (optionalKidUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
