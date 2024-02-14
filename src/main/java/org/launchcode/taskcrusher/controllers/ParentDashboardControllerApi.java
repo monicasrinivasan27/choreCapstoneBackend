@@ -148,11 +148,7 @@ public class ParentDashboardControllerApi {
 
         // Calculate and add information about the number of chores assigned to the child
         List<Chore> assignedChores = choreRepository.findByKid(kid);
-        int totalAssignedChores = 0;
-        // Loop through each assigned chore and count them
-        for (Chore chore : assignedChores) {
-            totalAssignedChores++;
-        }
+        int totalAssignedChores = assignedChores.size();
         // Add the total assigned chores to the card
         kidCard.put("totalAssignedChores", totalAssignedChores);
 

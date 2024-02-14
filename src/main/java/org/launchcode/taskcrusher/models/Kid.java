@@ -16,7 +16,7 @@ public class Kid {
 
     private double dollars;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     @JsonIgnore
     private User parent;
