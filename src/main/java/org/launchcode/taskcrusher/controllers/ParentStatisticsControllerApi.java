@@ -6,14 +6,8 @@ import org.launchcode.taskcrusher.models.Chore;
 import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
-import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
-import java.util.logging.Logger;
 
 //@RestController
 //@CrossOrigin
@@ -110,7 +104,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/parent-dashboard")
-public class ParentDashboardControllerApi {
+public class ParentStatisticsControllerApi {
 
     @Autowired
     private ChoreRepository choreRepository;

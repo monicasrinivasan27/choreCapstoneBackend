@@ -198,21 +198,16 @@ public class AssignmentControllerApi {
 
     @GetMapping("/kids")
     public List<Kid> getAllKids(@RequestParam Long id) {
-        // Assuming you have a method to find a parent by id in your repository
         Optional<User> optionalParent = userRepository.findById(id);
         System.out.println(id);
 
         if (optionalParent.isPresent()) {
             User parent = optionalParent.get();
             System.out.println(parent.getKids());
-
             return parent.getKids();
         }
         else return Collections.emptyList();
-
     }
-
-
 
     @PostMapping("/{id}/{choreId}/{kidId}")
     public String assignChoreToKid(
@@ -222,7 +217,6 @@ public class AssignmentControllerApi {
             @RequestParam(name = "dueDate") LocalDate dueDate,
             @RequestParam(name = "value") int value,
             @RequestParam(name = "valueType") String valueType){
-
         // Checking if both the chore and kid and Parent exist in the database
         Optional<Chore> choreOptional = choreRepository.findById(choreId);
         Optional<Kid> kidOptional = kidRepository.findById(kidId);
@@ -238,8 +232,6 @@ public class AssignmentControllerApi {
             chore.setDueDate(dueDate);
             chore.setValueType(valueType);
             chore.setValue(value);
-
-            // Associate the chore with the parent
             chore.setParent(parent);
 
             //set choreStatus to assigned
