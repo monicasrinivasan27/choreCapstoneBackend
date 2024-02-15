@@ -23,10 +23,8 @@ public class Chore {
     @Column(name = "image")
     private String image;
 
-
     @Column(name = "value_type")
     private String valueType;
-
 
     @Column(name = "value")
     private int value;

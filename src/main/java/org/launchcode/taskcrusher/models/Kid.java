@@ -21,7 +21,6 @@ public class Kid {
     @JsonIgnore
     private User parent;
 
-
     public int getKidId() {
         return kidId;
     }
