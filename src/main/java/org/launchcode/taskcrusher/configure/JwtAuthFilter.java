@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.channels.ScatteringByteChannel;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -30,11 +31,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 try {
                     if ("GET".equals(request.getMethod())) {
                         SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateToken(authElements[1]));
-                    } else {SecurityContextHolder.getContext().setAuthentication(
+                    }
+                    else {SecurityContextHolder.getContext().setAuthentication(
                             userAuthProvider.validateTokenStrongly(authElements[1]));
                     }
                 } catch (RuntimeException e) {
                     //If something goes wrong, clear the security context and throw error
+                    SecurityContextHolder.clearContext();
+                    throw e;
+                }
+            }
+
+            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
+                try{
+                    if ("GET".equals(request.getMethod())) {
+                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
+                    }
+                    else {
+                        SecurityContextHolder.getContext().setAuthentication(
+                                userAuthProvider.validateKidTokenStrongly(authElements[1]));
+                    }
+                    } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();
                     throw e;
                 }
