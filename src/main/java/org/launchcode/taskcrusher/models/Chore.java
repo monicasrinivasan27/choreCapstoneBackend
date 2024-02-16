@@ -120,6 +120,11 @@ public class Chore {
         return parent;
     }
 
+    public void setParent(User parent) {
+        this.parent = parent;
+    }
+
+
     @Override
     public String toString() {
         return "Chore{" +
