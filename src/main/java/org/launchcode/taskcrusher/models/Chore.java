@@ -96,10 +96,6 @@ public class Chore {
         this.valueType = valueType;
     }
 
-    public void setParent(User parent) {
-        this.parent = parent;
-    }
-
     public int getValue() {
         return value;
     }
