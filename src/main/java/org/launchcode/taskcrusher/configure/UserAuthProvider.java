@@ -1,5 +1,6 @@
 package org.launchcode.taskcrusher.configure;
 
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Component;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
-
 @RequiredArgsConstructor
 @Component
 public class UserAuthProvider {
@@ -47,6 +47,7 @@ public class UserAuthProvider {
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
+                .withClaim("id",user.getId())
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
                 .sign(algorithm);
@@ -78,11 +79,12 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = UserDto.builder()
+                .id(decoded.getClaim("id").asLong())
                 .username(decoded.getSubject())
                 .firstName(decoded.getClaim("firstName").asString())
                 .lastName(decoded.getClaim("lastName").asString())
                 .build();
-
+        logger.info("Token validated successfully for user: {}", user.getUsername());
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
@@ -109,6 +111,8 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = userService.findByUsername(decoded.getSubject());
+
+        user.setId(decoded.getClaim("id").asLong());
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

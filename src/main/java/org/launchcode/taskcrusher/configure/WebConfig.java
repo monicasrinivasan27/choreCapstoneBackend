@@ -35,6 +35,9 @@ public class WebConfig {
                 HttpMethod.PUT.name(),
                 HttpMethod.DELETE.name()
         ));
+     //  config.addAllowedMethod(HttpMethod.OPTIONS);
+ //       config.addAllowedOrigin("*");
+
         config.setMaxAge(MAX_AGE); //<-The time the Options request is accepted(30min)
         source.registerCorsConfiguration("/**", config); //<-Applied for all the requests
         CorsFilter bean = new CorsFilter(source);

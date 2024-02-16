@@ -7,6 +7,7 @@ import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/parent-dashboard")
-public class ParentDashboardControllerApi {
+public class ParentStatisticsControllerApi {
 
     @Autowired
     private ChoreRepository choreRepository;
@@ -28,10 +29,10 @@ public class ParentDashboardControllerApi {
     @Autowired
     private KidRepository kidRepository;
 
-    @GetMapping
-    public List<Map<String, Object>> getParentDashboardStatistics() {
+    @GetMapping("/statistics")
+    public List<Map<String, Object>> getParentDashboardStatistics(@RequestParam Long id) {
         // Get all kids from the database
-        Iterable<Kid> kids = kidRepository.findAll();
+        List<Kid> kids = kidRepository.findByParentId(id);
         // Create a list to store information about each child
         List<Map<String, Object>> kidsCards = new ArrayList<>();
 
@@ -58,11 +59,7 @@ public class ParentDashboardControllerApi {
 
         // Calculate and add information about the number of chores assigned to the child
         List<Chore> assignedChores = choreRepository.findByKid(kid);
-        int totalAssignedChores = 0;
-        // Loop through each assigned chore and count them
-        for (Chore chore : assignedChores) {
-            totalAssignedChores++;
-        }
+        int totalAssignedChores = assignedChores.size();
         // Add the total assigned chores to the card
         kidCard.put("totalAssignedChores", totalAssignedChores);
 
@@ -82,3 +79,5 @@ public class ParentDashboardControllerApi {
     }
 
 }
+
+
