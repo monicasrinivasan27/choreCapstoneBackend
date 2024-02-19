@@ -23,8 +23,8 @@ public class StatusControllerApi {
     private KidRepository kidRepository;
 
     // Endpoint for a parent to approve a completed chore and set points/dollars
-    @PostMapping("/approve/{choreId}/{parentId}")
-    public String approveChore(@PathVariable int choreId, @PathVariable Long parentId) {
+    @PostMapping("/approve/{choreId}/{id}")
+    public String approveChore(@PathVariable int choreId, @PathVariable Long id) {
         Optional<Chore> choreOptional = choreRepository.findById(choreId);
 
         if (!choreOptional.isPresent()) {
@@ -35,7 +35,7 @@ public class StatusControllerApi {
         Kid kid = chore.getKid();
 
         // Check if the provided parentId matches the parent associated with the kid
-        if (kid == null || !parentId.equals(kid.getParent().getId())) {
+        if (kid == null || !id.equals(kid.getParent().getId())) {
             return "User is not authorized to approve this chore.";
         }
 
