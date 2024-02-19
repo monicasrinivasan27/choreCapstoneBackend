@@ -30,7 +30,6 @@ public class Kid{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
-    @JsonIgnore
     private User parent;
 
     public String getUsername() {
