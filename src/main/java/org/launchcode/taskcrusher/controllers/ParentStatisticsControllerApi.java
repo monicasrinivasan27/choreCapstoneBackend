@@ -7,7 +7,6 @@ import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
 import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +28,10 @@ public class ParentStatisticsControllerApi {
     @Autowired
     private KidRepository kidRepository;
 
-    @GetMapping("/statistics")
-    public List<Map<String, Object>> getParentDashboardStatistics(@RequestParam Long id) {
+    @GetMapping
+    public List<Map<String, Object>> getParentDashboardStatistics() {
         // Get all kids from the database
-        List<Kid> kids = kidRepository.findByParentId(id);
+        Iterable<Kid> kids = kidRepository.findAll();
         // Create a list to store information about each child
         List<Map<String, Object>> kidsCards = new ArrayList<>();
 
@@ -59,7 +58,11 @@ public class ParentStatisticsControllerApi {
 
         // Calculate and add information about the number of chores assigned to the child
         List<Chore> assignedChores = choreRepository.findByKid(kid);
-        int totalAssignedChores = assignedChores.size();
+        int totalAssignedChores = 0;
+        // Loop through each assigned chore and count them
+        for (Chore chore : assignedChores) {
+            totalAssignedChores++;
+        }
         // Add the total assigned chores to the card
         kidCard.put("totalAssignedChores", totalAssignedChores);
 
@@ -79,5 +82,3 @@ public class ParentStatisticsControllerApi {
     }
 
 }
-
-
