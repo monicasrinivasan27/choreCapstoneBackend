@@ -1,12 +1,13 @@
 package org.launchcode.taskcrusher.controllers;
 
+import org.launchcode.taskcrusher.models.Kid;
 import org.launchcode.taskcrusher.models.Reward;
-import org.launchcode.taskcrusher.models.data.RewardRepository;
 import org.launchcode.taskcrusher.models.data.RewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.launchcode.taskcrusher.models.data.KidRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,9 @@ import java.util.Optional;
 public class RewardController {
     @Autowired
     private RewardRepository rewardRepository;
+
+    @Autowired
+    private KidRepository kidRepository;
 
     @GetMapping("/list")
     public ResponseEntity<List<Reward>> displayAllRewards() {
@@ -60,4 +64,26 @@ public class RewardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/claim/{claimPoints}/{kidId}")
+    public ResponseEntity ClaimReward(@PathVariable int claimPoints, @PathVariable int kidId) {
+        Optional<Kid> kidOptional = kidRepository.findById(kidId);
+        if (kidOptional.isPresent()) {
+            Kid kid = kidOptional.get();
+            int currentPoints = kid.getPoints();
+            if (currentPoints < claimPoints) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("Not enough points to claim");
+            } else {
+                kid.setPoints(currentPoints - claimPoints);
+                kidRepository.save(kid);
+            }
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(kid);
+        }
+        else{
+            return new ResponseEntity<>("Kid is not present", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
