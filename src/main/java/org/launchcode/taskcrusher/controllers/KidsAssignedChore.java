@@ -70,5 +70,21 @@ public class KidsAssignedChore {
             return new ResponseEntity<>("Kid not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/kids-assigned-chores-by-username/{userName}")
+    public ResponseEntity<AssignedChoresDTO> getAssignedChoresForKidNyUsername(@PathVariable String userName) {
+        Optional<Kid> kidOptional = kidRepository.findByUsername(userName);
+        if (kidOptional.isPresent()) {
+            Kid kid = kidOptional.get();
+            List<Chore> assignedChores = choreRepository.findByKid(kid);
+
+            AssignedChoresDTO assignedChoresDTO = new AssignedChoresDTO();
+            assignedChoresDTO.setKid(kid);
+            assignedChoresDTO.setChores(assignedChores);
+            return new ResponseEntity<>(assignedChoresDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
 
