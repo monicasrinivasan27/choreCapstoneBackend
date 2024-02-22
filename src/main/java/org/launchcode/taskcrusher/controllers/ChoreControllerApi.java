@@ -1,75 +1,114 @@
 package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.models.Chore;
+import org.launchcode.taskcrusher.models.User;
 import org.launchcode.taskcrusher.models.data.ChoreRepository;
+import org.launchcode.taskcrusher.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Collections;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/chores") // Base URL mapping for all endpoints in this controller
-@CrossOrigin // Enable cross-origin resource sharing to allow requests from different origins
+@RequestMapping("/api/chores")
+@CrossOrigin
 public class ChoreControllerApi {
 
-    // Autowire the ChoreRepository for interacting with chore data in the database
     @Autowired
     private ChoreRepository choreRepository;
 
-    // Retrieve a list of all chores
-    @GetMapping("/list")
-    public Iterable<Chore> getAllChores() {
-        return choreRepository.findAll(); // Fetch all chores from the database and return them
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    // Add/create a new chore
-    @PostMapping("/add")
-    public Chore createChore(@RequestBody Chore chore) {
-        return choreRepository.save(chore); // Save the new chore to the database and return the saved chore
+
+    @GetMapping("/list")
+    public Iterable<Chore> getChoresForParent(@RequestParam Long id) {
+        Optional<User> optionalParent = userRepository.findById(id);
+
+        if (optionalParent.isPresent()) {
+            User parent = optionalParent.get();
+            return choreRepository.findByParent(parent);
+        } else {
+
+            return Collections.emptyList();
+        }
     }
 
     // Fetch details of an existing chore for editing
     @GetMapping("/edit/{choreId}")
-    public Object getChoreDetails(@PathVariable int choreId) {
+    public Object getChoreDetailsForEditing(
+            @PathVariable int choreId,
+            @RequestParam Long id) {
+
         Optional<Chore> optionalChore = choreRepository.findById(choreId);
 
-        // Check if the chore with the given ID exists
         if (optionalChore.isPresent()) {
-            return optionalChore.get(); // Return the chore details if found
+            Chore chore = optionalChore.get();
+
+            // Check if the chore belongs to the specified parent
+            if (chore.getParent().getId().equals(id)) {
+                // Return the chore details if the parent is authorized to edit
+                return chore;
+            } else {
+                // Return a message if the chore does not belong to the specified parent
+                return "parent not found";
+            }
         } else {
-            return "Chore not found"; // Return a message if the chore is not found
+            // Return a message if the chore is not found
+            return "Chore not found";
         }
     }
 
-    // Update an existing chore
-    @PutMapping("/edit/{choreId}")
-    public Object updateChore(@PathVariable int choreId, @RequestBody Chore updatedChore) {
-        Optional<Chore> optionalChore = choreRepository.findById(choreId);
 
-        // Check if the chore with the given ID exists
-        if (optionalChore.isPresent()) {
-            Chore existingChore = optionalChore.get();
-            String imagePath = updatedChore.getImage();
+    // Add/create a new chore for a specific parent
+    @PostMapping("/add")
+    public Chore createChoreForParent(@RequestParam Long id, @RequestBody Chore chore) {
+        Optional<User> optionalParent = userRepository.findById(id);
 
-            // Ensure the image path starts with "/images/"
-            if (imagePath != null && !imagePath.startsWith("/images/")) {
-                imagePath = "/images/" + imagePath;
-            }
-
-            // Update chore details with the new information
-            existingChore.setName(updatedChore.getName());
-            existingChore.setDescription(updatedChore.getDescription());
-            existingChore.setImage(imagePath);
-
-            return choreRepository.save(existingChore); // Save the updated chore to the database and return it
+        if (optionalParent.isPresent()) {
+            User parent = optionalParent.get();
+            chore.setParent(parent);
+            return choreRepository.save(chore);
         } else {
-            return "Chore not found"; // Return a message if the chore is not found
+            return null;
+        }
+    }
+
+    // Update an existing chore for a specific parent
+
+    @PutMapping("/edit/{choreId}")
+    public Chore updateChoreForParent(@PathVariable int choreId, @RequestParam Long id, @RequestBody Chore updatedChore) {
+        Optional<User> optionalParent = userRepository.findById(id);
+
+        if (optionalParent.isPresent()) {
+            User parent = optionalParent.get();
+            Optional<Chore> optionalChore = choreRepository.findById(choreId);
+
+            if (optionalChore.isPresent()) {
+                Chore existingChore = optionalChore.get();
+                String imagePath = updatedChore.getImage();
+
+                // Ensure the image path starts with "/images/"
+                if (imagePath != null && !imagePath.startsWith("/images/")) {
+                    imagePath = "/images/" + imagePath;
+                }
+                existingChore.setName(updatedChore.getName());
+                existingChore.setDescription(updatedChore.getDescription());
+                existingChore.setImage(updatedChore.getImage());
+                existingChore.setParent(parent);
+                existingChore.setImage(imagePath);
+                return choreRepository.save(existingChore);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 
     // Delete a chore based on its ID
     @DeleteMapping("/{choreId}")
     public void deleteChore(@PathVariable int choreId) {
-        choreRepository.deleteById(choreId); // Delete the chore from the database based on its ID
+        choreRepository.deleteById(choreId);
     }
 }
