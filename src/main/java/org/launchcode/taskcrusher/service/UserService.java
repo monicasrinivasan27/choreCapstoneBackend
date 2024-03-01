@@ -32,37 +32,24 @@ public class UserService {
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-
-        Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown kid user", HttpStatus.NOT_FOUND));
-
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-//        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
 
-//        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
-//            return userMapper.toKidUserDto(kidUser);
-//        }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    //------------------------------ questions about how to return savedKidUser-----------------------------
+
     public UserDto register(SignUpDto userDto) {
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-//        Optional<Kid> optionalKidUSer = kidRepository.findByUsername(userDto.username());
-        if (optionalUser.isPresent()/* || optionalKidUSer.isPresent()*/) {
+
+        if (optionalUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
         User savedUser = userRepository.save(user);
-
-//        Kid kidUser = userMapper.signUpToUser(userDto);
-//        kidUser.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
-//        Kid savedKidUser = userRepository.save(kidUser);
-
         return userMapper.toUserDto(savedUser);
     }
 

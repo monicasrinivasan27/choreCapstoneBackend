@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin","/api/kidRegister").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin","/api/kidRegister","/api/logout").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
