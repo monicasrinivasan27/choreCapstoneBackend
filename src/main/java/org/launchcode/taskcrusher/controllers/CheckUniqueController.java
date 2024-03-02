@@ -1,5 +1,6 @@
 package org.launchcode.taskcrusher.controllers;
 
+import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.launchcode.taskcrusher.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,9 @@ public class CheckUniqueController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private KidRepository kidRepository;
 
 
     @PostMapping("/api/checkUnique")
@@ -30,4 +34,18 @@ public class CheckUniqueController {
 
         return response;
     }
+
+    @PostMapping("/api/checkKidUnique")
+    public Map<String, Object> kidCheckUnique(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+
+        boolean usernameExists = kidRepository.existsByUsername(username);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("usernameExists", usernameExists);
+
+        return response;
+    }
+
+
 }

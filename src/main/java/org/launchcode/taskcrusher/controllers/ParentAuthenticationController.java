@@ -43,6 +43,16 @@ public class ParentAuthenticationController {
                 .body(userDto);
     }
 
+    @PostMapping("/api/kidLogin")
+    public ResponseEntity<KidUserDto> kidLogin(@RequestBody @Valid CredentialsDto credentialsDto) {
+        KidUserDto kidUserDto = userService.kidLogin(credentialsDto);
+        String token = userAuthProvider.createKidToken(kidUserDto);
+        kidUserDto.setToken(token);
+        logger.info(token);
+
+        return ResponseEntity.ok().body(kidUserDto);
+    }
+
     @PostMapping("/api/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         logger.info("Received a request: {}");
@@ -52,8 +62,14 @@ public class ParentAuthenticationController {
         return ResponseEntity.created(URI.create("/users/" + createUser.getId())).body(createUser);
     }
 
+    @PostMapping("/api/kidRegister")
+    public ResponseEntity<KidUserDto> kidRegister(@RequestBody @Valid KidSignUpDto kidUser) {
+        logger.info("Received a request: {}");
+        System.out.println("Received a kid registration request for kid user: " + kidUser);
+        KidUserDto createKidUser = userService.kidRegister(kidUser);
 
-
+        return ResponseEntity.created(URI.create("/users/" + createKidUser.getId())).body(createKidUser);
+    }
 
     @PostMapping("/api/logout")
     public ResponseEntity<?> logout() {
