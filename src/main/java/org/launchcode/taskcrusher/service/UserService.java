@@ -67,6 +67,7 @@ public class UserService {
         Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
+
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
             return userMapper.toKidUserDto(kidUser);
         }
@@ -78,14 +79,24 @@ public class UserService {
         if (optionalKidUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
+
+        Long id = kidUserDto.id();
+
+        if (id == null) {
+            throw new AppException("Parent user ID is null", HttpStatus.BAD_REQUEST);
+        }
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException("Parent user not found", HttpStatus.NOT_FOUND));
+
         Kid kidUser = userMapper.signUpToKidUser(kidUserDto);
         kidUser.setPassword(passwordEncoder.encode(CharBuffer.wrap(kidUserDto.password())));
+       kidUser.setParent(user);
 
         Kid savedKidUser = kidRepository.save(kidUser);
 
         return userMapper.toKidUserDto(savedKidUser);
-
     }
+
 
     public KidUserDto findByKidUsername(String username) {
         Kid kidUser = kidRepository.findByUsername(username)
