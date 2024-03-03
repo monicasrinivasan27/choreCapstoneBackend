@@ -1,17 +1,18 @@
 package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.configure.UserAuthProvider;
+import org.launchcode.taskcrusher.models.Kid;
+import org.launchcode.taskcrusher.models.User;
+import org.launchcode.taskcrusher.models.data.KidRepository;
 import org.launchcode.taskcrusher.models.data.UserRepository;
 import org.launchcode.taskcrusher.models.dto.*;
 import org.launchcode.taskcrusher.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 
@@ -28,6 +29,12 @@ public class ParentAuthenticationController {
 
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
+
+    @Autowired
+    private final KidRepository kidRepository;
+
+    @Autowired
+    private final UserRepository userRepository;
 
 
 
@@ -63,13 +70,15 @@ public class ParentAuthenticationController {
     }
 
     @PostMapping("/api/kidRegister")
-    public ResponseEntity<KidUserDto> kidRegister(@RequestBody @Valid KidSignUpDto kidUser) {
-        logger.info("Received a request: {}");
-        System.out.println("Received a kid registration request for kid user: " + kidUser);
-        KidUserDto createKidUser = userService.kidRegister(kidUser);
-
-        return ResponseEntity.created(URI.create("/users/" + createKidUser.getId())).body(createKidUser);
+    public ResponseEntity<KidUserDto> kidRegister(@RequestParam Long id, @RequestBody @Valid KidSignUpDto kidUserDto) {
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        System.out.println("Request Body: " + kidUserDto);
+        KidUserDto createdKidUserDto = userService.kidRegister(kidUserDto);
+        return ResponseEntity.created(URI.create("/users/" + createdKidUserDto.getId())).body(createdKidUserDto);
     }
+
 
     @PostMapping("/api/logout")
     public ResponseEntity<?> logout() {
