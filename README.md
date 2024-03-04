@@ -41,7 +41,6 @@ Integration for adjusting chores based on holidays.
 
 
 ## Group Members:
-
 Katy Tapley
 Bhavana Bonamukkala
 Navyasree Arekuti
