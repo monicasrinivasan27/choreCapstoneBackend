@@ -1,4 +1,5 @@
-# group-madison-2
+# Task Crusher Backend
+
 Project for Launchcode's Liftoff Project
 
 Welcome to the Task Crusher Backend Repository!
@@ -38,10 +39,8 @@ Secure and Stateless User Authentication and Verification System.
 ### Nager.Date API:
 Integration for adjusting rewards based on holidays.
 
-
-
 ## Group Members:
-Katy Tapley
-Bhavana Bonamukkala
-Navyasree Arekuti
-Monica Srinivasan
+* Katy Tapley
+* Bhavana Bonamukkala
+* Navyasree Arekuti
+* Monica Srinivasan
