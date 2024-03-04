@@ -9,7 +9,7 @@ This repository contains the backend code for Task Crusher, a comprehensive chor
 
 ### User Authentication and Management:
 * Secure registration and login/logout functionality for parents.
-* Seamless user authentication using JWT (JSON Web Tokens).
+* Stateless user authentication using JWT (JSON Web Tokens).
 * Parents can register their children.
 * Child login/logout capabilities.
 ### Chore Management:
@@ -34,9 +34,9 @@ Backend development for scalability, security, and maintainability.
 ### MySQL: 
 Relational database for storing user accounts, chores, and rewards data.
 ### JWT (JSON Web Tokens):
-Robust user authentication and session management.
+Secure and Stateless User Authentication and Verification System.
 ### Nager.Date API:
-Integration for adjusting chores based on holidays.
+Integration for adjusting rewards based on holidays.
 
 
 
