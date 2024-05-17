@@ -16,7 +16,7 @@ public class ApiController {
     @GetMapping("/holiday-data")
     //Gets the Input date from the React front end when the Parent clicks on the Date.
     public Boolean endpointCallApi(@RequestParam String dueDate) {
-        //Getting the Year alone
+        //Getting the Year alone from the Input
         String  yearParam  = dueDate.substring(0, 4);
         //The API needs the Year and hence passing this value to it.
         ResponseEntity<ApiResponseBody[]> response = ResponseEntity.ok(apiService.getAllHoliday(yearParam));
